@@ -327,7 +327,7 @@ namespace saucer
             return m_impl->post_safe([this, enabled] { set_decorations(enabled); });
         }
 
-        static constexpr auto flags = WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU;
+        static constexpr auto flags = WS_CAPTION  | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU;
         auto current_style          = GetWindowLongW(m_impl->hwnd, GWL_STYLE);
 
         if (enabled)
