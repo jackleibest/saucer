@@ -48,6 +48,13 @@ namespace saucer
 
         switch (msg)
         {
+        case WM_NCCALCSIZE:
+            if (w_param == TRUE) {
+                NCCALCSIZE_PARAMS* params = (NCCALCSIZE_PARAMS*)l_param;
+                params->rgrc[0].top += 1;
+                return 0;
+            }
+            break;
         case WM_GETMINMAXINFO: {
             auto *info = reinterpret_cast<MINMAXINFO *>(l_param);
 
@@ -98,7 +105,10 @@ namespace saucer
         }
         case WM_DESTROY:
         case WM_CLOSE: {
-            if (window->m_events.at<window_event::close>().until(true))
+            auto results = window->m_events.at<window_event::close>().fire();
+            auto prevent = std::ranges::any_of(results, [](auto res) { return res; });
+
+            if (prevent)
             {
                 return 0;
             }
